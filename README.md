@@ -20,11 +20,6 @@ Apps:
 - Restaurant dashboard: `http://localhost:5174/login`
 - API: `http://localhost:4000`
 
-Demo owner:
-
-- Email: `owner@spicehub.in`
-- Password: `password123`
-
 ## Structure
 
 ```text
