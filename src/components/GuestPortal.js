@@ -244,7 +244,7 @@ export default function GuestPortal({ business, staff, tables = [], tableId }) {
     const upiId = selectedStaff?.upi_id;
     const staffName = encodeURIComponent(selectedStaff?.name || 'Staff');
     const upiLink = upiId
-      ? `upi://pay?pa=${upiId}&pn=${staffName}&am=${effectiveTip}&cu=INR`
+      ? `upi://pay?pa=${upiId}&pn=${staffName}&cu=INR`
       : null;
 
     return (

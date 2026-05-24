@@ -778,6 +778,28 @@
   }
 }
 
+.primaryButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-4);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-inverse) !important;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #0d9488 100%);
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  min-height: 54px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  box-shadow: 0 10px 20px -5px rgba(15, 118, 110, 0.3);
+  text-align: center;
+}
+
 .primaryButton:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 12px 24px -5px rgba(15, 118, 110, 0.3);
