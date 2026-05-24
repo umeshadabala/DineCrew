@@ -1,23 +1,24 @@
 {
-  "name": "restotip-platform",
-  "version": "1.0.0",
+  "name": "dinecrew",
+  "version": "0.1.0",
   "private": true,
-  "description": "RestoTip by ParkoSpace - QR restaurant feedback and UPI tipping platform",
   "scripts": {
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:customer\" \"npm run dev:restaurant\"",
-    "dev:customer": "npm --workspace client/customer run dev",
-    "dev:restaurant": "npm --workspace client/restaurant run dev",
-    "dev:server": "npm --workspace server run dev",
-    "build": "npm --workspace client/customer run build && npm --workspace client/restaurant run build",
-    "start": "npm --workspace server start",
-    "seed": "npm --workspace server run seed"
+    "dev": "next dev --webpack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
   },
-  "workspaces": [
-    "client/customer",
-    "client/restaurant",
-    "server"
-  ],
+  "dependencies": {
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.106.1",
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@tailwindcss/postcss": "^4",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "tailwindcss": "^4"
   }
 }
