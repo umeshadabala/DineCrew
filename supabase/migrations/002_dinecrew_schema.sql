@@ -357,3 +357,21 @@ DO $$ BEGIN
     FOR DELETE USING (bucket_id = 'avatars' AND auth.role() = 'authenticated');
 EXCEPTION WHEN duplicate_object THEN NULL;
 END $$;
+
+-- ============================================================
+-- HELPER FUNCTIONS FOR CLIENT SIDE CHECK
+-- ============================================================
+
+-- Secure function to check if an email exists in auth.users
+CREATE OR REPLACE FUNCTION public.check_email_exists(email_to_check text)
+RETURNS boolean AS $$
+BEGIN
+  RETURN EXISTS (
+    SELECT 1 FROM auth.users WHERE email = email_to_check
+  );
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Grant execution permission to public/anon/authenticated roles
+GRANT EXECUTE ON FUNCTION public.check_email_exists(text) TO anon, authenticated;
+

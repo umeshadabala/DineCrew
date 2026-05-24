@@ -55,44 +55,17 @@ export default function Register() {
       return;
     }
 
-    // ── Check if email already exists in Supabase Auth BEFORE sending OTP ──
+    // Check if email already exists in Supabase auth using our secure RPC helper
     try {
       const supabase = getSupabaseBrowser();
-
-      // Attempt signUp with a throwaway password to probe whether the email exists.
-      // Supabase returns an empty identities array when the user already exists
-      // (with email confirmation disabled), or throws a 422 "already registered" error.
-      const { data: checkData, error: checkError } = await supabase.auth.signUp({
-        email,
-        password: '__probe_' + Date.now() + '_' + Math.random().toString(36).slice(2),
-      });
-
-      if (checkError) {
-        if (
-          checkError.message.toLowerCase().includes('already registered') ||
-          checkError.status === 422
-        ) {
-          setShowExistingDialog(true);
-          setLoading(false);
-          return;
-        }
-        // Other errors — let the real signup handle them later
-      }
-
-      // Empty identities = user already exists
-      if (checkData?.user && (!checkData.user.identities || checkData.user.identities.length === 0)) {
+      const { data: emailExists, error: rpcError } = await supabase.rpc('check_email_exists', { email_to_check: email });
+      if (!rpcError && emailExists) {
         setShowExistingDialog(true);
         setLoading(false);
         return;
       }
-
-      // If the probe accidentally created a user, sign out so the real flow can proceed
-      if (checkData?.user?.identities?.length > 0) {
-        await supabase.auth.signOut();
-      }
-    } catch (probeErr) {
-      // Don't block registration if the probe fails
-      console.warn('Email pre-check failed, continuing:', probeErr);
+    } catch (err) {
+      console.error('Error checking email existence:', err);
     }
 
     // Fast bypass for testing/development
@@ -164,7 +137,8 @@ export default function Register() {
         throw signUpError;
       }
 
-      if (authData?.user && (!authData.user.identities || authData.user.identities.length === 0)) {
+      // Check if user already exists based on identities array (specifically length 0)
+      if (authData?.user && Array.isArray(authData.user.identities) && authData.user.identities.length === 0) {
         setShowExistingDialog(true);
         setLoading(false);
         return;
@@ -349,6 +323,9 @@ export default function Register() {
             <button type="submit" className={styles.submitBtn} disabled={loading}>
               {loading ? 'Checking...' : 'Continue'}
             </button>
+            <p style={{ textAlign: 'center', marginTop: '12px', fontSize: '0.85rem', color: 'var(--color-text-muted)' }}>
+              If you already have an account, you can <Link href="/login" className={styles.link}>Sign In</Link> to redirect.
+            </p>
           </form>
         ) : (
           <form onSubmit={handleVerifyOTP} className={styles.form}>
