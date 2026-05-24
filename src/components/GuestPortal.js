@@ -529,9 +529,11 @@ export default function GuestPortal({ business, staff, tables = [], tableId }) {
               &times;
             </button>
             <div className={styles.adBadge}>Sponsored Ad</div>
-            <div className={styles.adImageWrapper}>
-              <img src="/parkospace-ad.jpg" alt="ParkoSpace Ad" className={styles.adImage} />
-            </div>
+            <a href="https://parkospace.xyz/" target="_blank" rel="noopener noreferrer" style={{ display: 'block', cursor: 'pointer' }}>
+              <div className={styles.adImageWrapper}>
+                <img src="/parkospace-ad.jpg" alt="ParkoSpace Ad" className={styles.adImage} />
+              </div>
+            </a>
             <button className={styles.adCloseBtn} onClick={() => setShowAd(false)}>
               Continue to Tipping Portal &rarr;
             </button>
