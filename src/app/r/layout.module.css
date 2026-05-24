@@ -1,0 +1,17 @@
+.wrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, rgba(15, 118, 110, 0.05) 0%, rgba(250, 250, 250, 1) 90%);
+}
+
+@media (max-width: 480px) {
+  .wrapper {
+    background: var(--color-bg);
+    display: block;
+    height: 100%;
+    width: 100%;
+  }
+}

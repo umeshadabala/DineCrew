@@ -1,0 +1,307 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* Settings Layout */
+.settingsGrid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-6);
+}
+
+@media (max-width: 1024px) {
+  .settingsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panelCard {
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-5) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panelTitle {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.panelContent {
+  padding: var(--space-6);
+  flex: 1;
+}
+
+/* Forms */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  .formGrid > div {
+    grid-column: span 1 !important;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.inputGroup label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.inputGroup input {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg);
+  font-size: var(--text-sm);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.inputGroup input:focus {
+  border-color: var(--color-primary);
+}
+
+.disabledInput {
+  background-color: var(--color-bg-subtle) !important;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border) !important;
+  cursor: not-allowed;
+}
+
+.hintText {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.saveBtn {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.saveBtn:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* Informative Sidebar Blocks */
+.infoBlock {
+  margin-bottom: var(--space-6);
+}
+
+.infoBlock:last-child {
+  margin-bottom: 0;
+}
+
+.infoBlock h4 {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.infoBlock p {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-2);
+}
+
+.infoLink {
+  font-size: var(--text-xs);
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--weight-medium);
+}
+
+.infoLink:hover {
+  text-decoration: underline;
+}
+
+/* Danger Zone */
+.dangerPanel {
+  border-color: var(--color-error-light);
+}
+
+.dangerTitle {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-error);
+}
+
+.dangerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.dangerRow h4 {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.dangerRow p {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.deleteInitBtn {
+  background-color: var(--color-error-light);
+  color: var(--color-error);
+  border: 1px solid var(--color-error-light);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  transition: all var(--transition-fast);
+}
+
+.deleteInitBtn:hover {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+}
+
+/* Confirmation Box */
+.dangerConfirmBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.dangerConfirmBox h4 {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--color-error);
+}
+
+.dangerConfirmBox p {
+  font-size: var(--text-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+.confirmActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+.confirmInput {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-error-light);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  outline: none;
+  background-color: var(--color-bg);
+}
+
+.confirmInput:focus {
+  border-color: var(--color-error);
+}
+
+.deleteConfirmBtn {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.deleteConfirmBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.deleteConfirmBtn:not(:disabled):hover {
+  background-color: #b91c1c;
+}
+
+.secondaryBtn {
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  transition: all var(--transition-fast);
+}
+
+.secondaryBtn:hover {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text);
+}
+
+/* Toast Messages */
+.toast {
+  position: fixed;
+  bottom: var(--space-8);
+  right: var(--space-8);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  color: var(--color-text-inverse);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  animation: slideInRight 0.3s ease-out;
+}
+
+.toastSuccess {
+  background-color: var(--color-success);
+}
+
+.toastError {
+  background-color: var(--color-error);
+}
+
+.animateFade {
+  animation: fadeIn 0.3s ease-out;
+}

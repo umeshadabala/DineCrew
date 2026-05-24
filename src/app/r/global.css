@@ -1,0 +1,11 @@
+html,
+body {
+  height: 100% !important;
+  height: 100dvh !important;
+  overflow: hidden !important;
+  position: fixed !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overscroll-behavior: none !important;
+}
