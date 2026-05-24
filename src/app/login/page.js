@@ -84,13 +84,13 @@ function LoginForm() {
 
   const getRoleTitle = () => {
     if (roleType === 'restaurant') return 'Restaurant & Cafe Portal';
-    if (roleType === 'hotel') return 'Hotel Portal (Overnight Stays)';
+    if (roleType === 'hotel') return 'Hotel Portal';
     return 'Staff Member Portal';
   };
 
   const getRoleSub = () => {
     if (roleType === 'restaurant') return 'Manage tables, tips, and staff for your dining venue';
-    if (roleType === 'hotel') return 'Manage rooms, feedback, and tips for overnight lodging';
+    if (roleType === 'hotel') return 'Manage rooms, feedback, and tips for your hotel';
     return 'Browse hospitality job openings and manage your applications';
   };
 
@@ -129,7 +129,7 @@ function LoginForm() {
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M3 21h18M3 7V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2M5 21V7M19 21V7M9 11h6M9 15h6" />
           </svg>
-          <span>Hotel (Overnight)</span>
+          <span>Hotel</span>
         </button>
         <button
           type="button"

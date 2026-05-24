@@ -81,7 +81,7 @@ export default function Home() {
             <div className={styles.stepCard}>
               <div className={styles.stepNumber}>1</div>
               <h3>Register Your Venue</h3>
-              <p>Create an account for your Restaurant & Cafe or Hotel (overnight stays). Set up your location profile.</p>
+              <p>Create an account for your Restaurant & Cafe or Hotel. Set up your location profile.</p>
             </div>
             <div className={styles.stepCard}>
               <div className={styles.stepNumber}>2</div>
