@@ -28,7 +28,15 @@ function LoginForm() {
     });
 
     if (signInError) {
-      setError(signInError.message);
+      // Translate raw Supabase errors into user-friendly messages
+      const msg = signInError.message?.toLowerCase() || '';
+      if (msg.includes('invalid login credentials') || msg.includes('invalid credentials')) {
+        setError('Incorrect email or password. Please double-check and try again, or register if you don\'t have an account.');
+      } else if (msg.includes('email not confirmed')) {
+        setError('Your email has not been confirmed yet. Please check your inbox.');
+      } else {
+        setError(signInError.message);
+      }
       setLoading(false);
       return;
     }

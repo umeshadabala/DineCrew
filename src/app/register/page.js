@@ -55,6 +55,46 @@ export default function Register() {
       return;
     }
 
+    // ── Check if email already exists in Supabase Auth BEFORE sending OTP ──
+    try {
+      const supabase = getSupabaseBrowser();
+
+      // Attempt signUp with a throwaway password to probe whether the email exists.
+      // Supabase returns an empty identities array when the user already exists
+      // (with email confirmation disabled), or throws a 422 "already registered" error.
+      const { data: checkData, error: checkError } = await supabase.auth.signUp({
+        email,
+        password: '__probe_' + Date.now() + '_' + Math.random().toString(36).slice(2),
+      });
+
+      if (checkError) {
+        if (
+          checkError.message.toLowerCase().includes('already registered') ||
+          checkError.status === 422
+        ) {
+          setShowExistingDialog(true);
+          setLoading(false);
+          return;
+        }
+        // Other errors — let the real signup handle them later
+      }
+
+      // Empty identities = user already exists
+      if (checkData?.user && (!checkData.user.identities || checkData.user.identities.length === 0)) {
+        setShowExistingDialog(true);
+        setLoading(false);
+        return;
+      }
+
+      // If the probe accidentally created a user, sign out so the real flow can proceed
+      if (checkData?.user?.identities?.length > 0) {
+        await supabase.auth.signOut();
+      }
+    } catch (probeErr) {
+      // Don't block registration if the probe fails
+      console.warn('Email pre-check failed, continuing:', probeErr);
+    }
+
     // Fast bypass for testing/development
     if (email.endsWith('@test.com') || email === 'test@test.com') {
       setStep(2);
@@ -66,19 +106,19 @@ export default function Register() {
       const res = await fetch('https://otp-service-beta.vercel.app/api/otp/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          email, 
+        body: JSON.stringify({
+          email,
           type: 'numeric',
-          organization: 'DineCrew', 
+          organization: 'DineCrew',
           subject: 'DineCrew Registration OTP Code'
         }),
       });
       const data = await res.json();
-      
+
       if (!res.ok) {
         throw new Error(data.error || 'Failed to send OTP. Please check your email.');
       }
-      
+
       setStep(2);
     } catch (err) {
       setError(err.message);
@@ -102,7 +142,7 @@ export default function Register() {
           body: JSON.stringify({ email, otp }),
         });
         const data = await res.json();
-        
+
         if (!res.ok) {
           throw new Error(data.error || 'Invalid OTP code. Please try again.');
         }
@@ -132,7 +172,6 @@ export default function Register() {
 
       if (authData?.user) {
         if (roleType === 'restaurant' || roleType === 'hotel') {
-          // Insert into businesses table
           const { error: insertError } = await supabase.from('businesses').insert({
             owner_id: authData.user.id,
             name: businessName.trim(),
@@ -143,7 +182,6 @@ export default function Register() {
           if (insertError) throw insertError;
           router.push('/dashboard');
         } else {
-          // Insert into staff_profiles table
           const { error: insertError } = await supabase.from('staff_profiles').insert({
             user_id: authData.user.id,
             name: fullName.trim(),
@@ -154,7 +192,7 @@ export default function Register() {
           if (insertError) throw insertError;
           router.push('/staff');
         }
-        
+
         router.refresh();
       } else {
         throw new Error('Supabase Auth user creation failed');
@@ -308,8 +346,8 @@ export default function Register() {
               />
             </div>
 
-             <button type="submit" className={styles.submitBtn} disabled={loading}>
-              {loading ? 'Processing...' : 'Continue'}
+            <button type="submit" className={styles.submitBtn} disabled={loading}>
+              {loading ? 'Checking...' : 'Continue'}
             </button>
           </form>
         ) : (
@@ -331,28 +369,36 @@ export default function Register() {
               </span>
             </div>
 
-             <button type="submit" className={styles.submitBtn} disabled={loading}>
+            <button type="submit" className={styles.submitBtn} disabled={loading}>
               {loading ? 'Verifying...' : 'Verify & Complete Signup'}
             </button>
-            <button 
-              type="button" 
-              className={styles.link} 
+            <button
+              type="button"
+              className={styles.link}
               style={{ marginTop: '16px', background: 'none', border: 'none', cursor: 'pointer' }}
-               onClick={() => setStep(1)}
-               disabled={loading}
-             >
-               Back to Form
-             </button>
+              onClick={() => setStep(1)}
+              disabled={loading}
+            >
+              Back to Form
+            </button>
           </form>
         )}
 
+        <div className={styles.footer}>
+          <p className={styles.footerText}>
+            Already have an account?{' '}
+            <Link href="/login" className={styles.link}>
+              Sign In
+            </Link>
+          </p>
+        </div>
       </div>
 
       {showExistingDialog && (
         <div className={styles.overlay} onClick={() => setShowExistingDialog(false)}>
           <div className={styles.dialog} onClick={(e) => e.stopPropagation()}>
             <div className={styles.dialogIcon}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 16v-4" />
                 <path d="M12 8h.01" />
@@ -360,21 +406,21 @@ export default function Register() {
             </div>
             <h3 className={styles.dialogTitle}>Account Already Exists</h3>
             <p className={styles.dialogText}>
-              An account with this email is already registered. Would you like to sign in instead?
+              An account with <strong>{email}</strong> is already registered on DineCrew. Please sign in to continue.
             </p>
             <div className={styles.dialogActions}>
               <button
                 className={styles.dialogCancel}
-                 onClick={() => setShowExistingDialog(false)}
-               >
-                 Cancel
-               </button>
+                onClick={() => setShowExistingDialog(false)}
+              >
+                Cancel
+              </button>
               <button
                 className={styles.dialogConfirm}
-                 onClick={() => router.push('/login')}
-               >
-                 Go to Sign In
-               </button>
+                onClick={() => router.push('/login')}
+              >
+                Go to Sign In →
+              </button>
             </div>
           </div>
         </div>
